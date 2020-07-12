@@ -1,8 +1,10 @@
 let solution = document.getElementById("solution");
 let inputs = document.getElementsByTagName("input");
 
-
-// -----------------check Input-------------
+for (var input of inputs) {
+    input.value = "";
+}
+// -----------------CHECKING INPUTS-------------
 
 function checkInput(inputs, button) {
     for (const input of inputs) {
@@ -13,52 +15,52 @@ function checkInput(inputs, button) {
     }
 }
 
+// -------------CALCULATE ACTIONS-------------
 
-// ----------------check Empty input----------------
-
-function checkEmptyInput(value) {
-    if (isNaN(value)) {
-        solution.innerText = "Please fill input!"
+function getSquareValue(input) {
+    if (isNaN(input.valueAsNumber)) {
+        return "Please fill input or type number";
     } else {
-        solution.innerText = value;
+        return Math.sqrt(input.valueAsNumber);
+    }
+}
+
+function getHalfValue(input) {
+    if (isNaN(input.valueAsNumber)) {
+        return "Please fill input or type number";
+    } else {
+        return input.valueAsNumber / 2;
+    }
+}
+
+function getPercentValue(input1, input2) {
+    if (input2.valueAsNumber === 0) {
+        return "Cannot divide by zero";
+    }
+    if (isNaN(input1.valueAsNumber) || isNaN(input2.valueAsNumber)) {
+        return "Please fill input or type number";
+    } else {
+        return input1.valueAsNumber / input2.valueAsNumber;
+    }
+}
+
+function getAreaValue(input) {
+    if (isNaN(input.valueAsNumber)) {
+        return "Please fill input or type number";
+    } else {
+        return Math.round(Math.PI * Math.pow(input.valueAsNumber, 2));
     }
 }
 
 
-// -------------Calculate actions-------------
-
-function squareVal(input) {
-    return Math.sqrt(input.valueAsNumber);
-}
-
-function halfVal(input) {
-    return input.valueAsNumber / 2;
-}
-
-function percentVal(input2, input1) {
-    if (isNaN(input2.valueAsNumber)) {
-        input2.valueAsNumber = 0;
-    }
-    if (isNaN(input1.valueAsNumber)) {
-        input1.valueAsNumber = 0;
-    }
-    return (`${input2.valueAsNumber}.${input1.valueAsNumber}`);
-}
-
-function areaVal(input) {
-    return Math.round(Math.PI * Math.pow(input.valueAsNumber, 2));
-}
-
-
-// --------------Button actions----------------
+// --------------BUTTON ACTIONS----------------
 
 const squareInput = document.getElementById("square-input");
 const squareButton = document.getElementById("square-button")
 
 squareButton.addEventListener("click", function() {
     checkInput(inputs, this);
-    checkEmptyInput(squareVal(squareInput));
-
+    solution.innerText = getSquareValue(squareInput);
 })
 
 const halfInput = document.getElementById("half-input");
@@ -66,7 +68,7 @@ const halfButton = document.getElementById("half-button");
 
 halfButton.addEventListener("click", function() {
     checkInput(inputs, this);
-    checkEmptyInput(halfVal(halfInput));
+    solution.innerText = getHalfValue(halfInput);
 })
 
 const percent1Input = document.getElementById("percent1-input");
@@ -75,7 +77,7 @@ const percentButton = document.getElementById("percent-button");
 
 percentButton.addEventListener("click", function() {
     checkInput(inputs, this);
-    checkEmptyInput(percentVal(percent2Input, percent1Input));
+    solution.innerText = getPercentValue(percent1Input, percent2Input);
 })
 
 const areaInput = document.getElementById("area-input");
@@ -83,11 +85,11 @@ const areaButton = document.getElementById("area-button");
 
 areaButton.addEventListener("click", function() {
     checkInput(inputs, this);
-    checkEmptyInput(areaVal(areaInput));
+    solution.innerText = getAreaValue(areaInput);
 })
 
 
-// -------------check Enter key--------------
+// -------------CHECKING ENTER KEY--------------
 
 function checkEnterKey(value, event) {
     if (event.keyCode === 13) {
@@ -96,29 +98,29 @@ function checkEnterKey(value, event) {
 }
 
 
-// -------------Enter key actions----------------
+// -------------ENTER KEY ACTIONS----------------
 
 squareInput.addEventListener("keyup", function(event) {
+    checkEnterKey(getSquareValue(squareInput), event);
     checkInput(inputs, this);
-    checkEnterKey(squareVal(squareInput), event);
 })
 
 halfInput.addEventListener("keyup", function(event) {
+    checkEnterKey(getHalfValue(halfInput), event);
     checkInput(inputs, this);
-    checkEnterKey(halfVal(halfInput), event);
 })
 
 percent1Input.addEventListener("keyup", function(event) {
+    checkEnterKey(getPercentValue(percent1Input, percent2Input), event)
     checkInput(inputs, this);
-    checkEnterKey(percentVal(percent2Input, percent1Input), event)
 })
 
 percent2Input.addEventListener("keyup", function(event) {
+    checkEnterKey(getPercentValue(percent1Input, percent2Input), event)
     checkInput(inputs, this);
-    checkEnterKey(percentVal(percent2Input, percent1Input), event)
 })
 
 areaInput.addEventListener("keyup", function(event) {
+    checkEnterKey(getAreaValue(areaInput), event);
     checkInput(inputs, this);
-    checkEnterKey(areaVal(areaInput), event);
 })
